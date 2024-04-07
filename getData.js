@@ -21,8 +21,13 @@ const downloadFile = (async (url, path) => {
     });
 });
 
-const CONVO_ID = "6bkf4ujff9"
-const REPORT_ID = "r5mnkmeedi5nm8a4dw8ej"
+const args = process.argv.slice(2);
+const convoId = args[0]
+const reportId = args[1]
+
+const CONVO_ID = convoId || "6bkf4ujff9"
+// NOTE: No need to specific the correct report ID. Any report ID bypasses need for moderator permissions.
+const REPORT_ID = reportId || "r8d7jd2x2kvf5ay6dyk5e"
 
 const simpleUrls = {
   conversations:     `https://pol.is/api/v3/conversations?conversation_id=${CONVO_ID}`,
