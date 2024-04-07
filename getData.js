@@ -9,7 +9,7 @@ const convoData = {
 }
 
 const downloadFile = (async (url, path) => {
-  const res = await fetch(url);
+  const res = await fetch(url, {headers: {'user-agent': 'x'}});
   const fileStream = fs.createWriteStream(path);
   return new Promise((resolve, reject) => {
       res.json().then(data => {
@@ -31,7 +31,26 @@ const simpleUrls = {
   comments:          `https://pol.is/api/v3/comments?conversation_id=${CONVO_ID}&moderation=true&include_voting_patterns=true`,
 }
 
-downloadFile(simpleUrls.conversations,     `data/${CONVO_ID}--conversations.json`).then(data => console.log(data))
+downloadFile(simpleUrls.conversations,     `data/${CONVO_ID}--conversations.json`)
 downloadFile(simpleUrls.conversationStats, `data/${CONVO_ID}--conversationStats.json`)
-downloadFile(simpleUrls.pca2,              `data/${CONVO_ID}--math-pca2.json`)
+downloadFile(simpleUrls.pca2,              `data/${CONVO_ID}--math-pca2.json`).then(data => {
+  let allVotes = []
+  const downloadVotesN = (n) => {
+    return downloadFile(
+      `https://pol.is/api/v3/votes?conversation_id=${CONVO_ID}&pid=${n}`,
+      `data/${CONVO_ID}--votes--${String(n).padStart(3, '0')}.json`
+    )
+  }
+  Promise.all(Array.from(Array(data.n).keys()).map(n => downloadVotesN(n))).then(responses => {
+    // Flatten the array of all responses into one.
+    const allVotes = responses.flat(1)
+    fs.writeFile(`data/${CONVO_ID}--votes.json`, JSON.stringify(allVotes, null, 2), err => {
+      if (err) {
+        console.error(err);
+      } else {
+        // file written successfully
+      }
+    });
+  })
+})
 downloadFile(simpleUrls.comments,          `data/${CONVO_ID}--comments.json`)
