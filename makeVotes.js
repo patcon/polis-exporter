@@ -17,7 +17,6 @@ const sortByCommentIdAsc = (a, b) => {
   return a.tid - b.tid || a.pid - b.pid
 }
 const sorted = unsorted.sort(sortByCommentIdAsc)
-console.log(sorted)
 
 const refinedData = []
 refinedData.push(["timestamp", "datetime", "comment-id", "voter-id", "vote"])
@@ -26,6 +25,7 @@ sorted.forEach(item => {
     item.modified,
     // TODO: Manually build custom Polis export date format.
     // Example: Wed Jul 27 21:56:00 WIB 2022
+    //regex = /([a-z]+ [a-z]+ \d+ \d\d:\d\d:\d\d \d\d\d\d) ([a-z]+)/i
     new Date(Number(item.modified)).toLocaleString("en-CA", {
       weekday: "short",
       month: "short",
@@ -41,7 +41,8 @@ sorted.forEach(item => {
     }).replaceAll(",", ""),
     item.tid,
     item.pid,
-    item.vote,
+    // Invert API response for some reason. Why?
+    -item.vote,
   ])
 })
 
