@@ -58,3 +58,4 @@ fs.writeFile(`data/${CONVO_ID}--votes.csv`, csvContent, err => {
     // file written successfully
   }
 })
+console.log(`Writing: data/${CONVO_ID}--votes.csv`)
