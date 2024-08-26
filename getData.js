@@ -1,6 +1,6 @@
 import fetch from "node-fetch"
 import fs from 'node:fs'
-import https from 'https';
+import https from 'https'
 
 const convoData = {
   conversations: null,
@@ -9,26 +9,23 @@ const convoData = {
   comments: null,
 }
 
-const downloadFile = (async (url, path) => {
-  const res = await fetch(url, {
-    headers: {'user-agent': 'x'},
-    // Ensure TLSv1.3, so Cloudflare doesn't block
-    agent: new https.Agent({
-      minVersion: 'TLSv1.3',
-    }),
-  });
-  const fileStream = fs.createWriteStream(path);
-  return new Promise((resolve, reject) => {
-      res.json().then(data => {
-        fileStream.write(JSON.stringify(data, null, 2))
-        resolve(data)
-      })
-      res.body.on("error", reject);
-      fileStream.on("finish", resolve);
-    });
-});
+const downloadFile = async (url, path) => {
+  try {
+    const res = await fetch(url, {
+      headers: {'user-agent': 'x'},
+      // Ensure TLSv1.3, so Cloudflare doesn't block
+      agent: new https.Agent({ minVersion: 'TLSv1.3' }),
+    })
+    const data = await res.json()
+    await fs.promises.writeFile(path, JSON.stringify(data, null, 2))
+    return data
+  } catch (error) {
+    console.error(`Error downloading file from ${url}:`, error)
+    throw error
+  }
+}
 
-const args = process.argv.slice(2);
+const args = process.argv.slice(2)
 const convoId = args[0]
 const reportId = args[1]
 
