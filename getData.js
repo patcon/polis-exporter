@@ -1,5 +1,6 @@
 import fetch from "node-fetch"
 import fs from 'node:fs'
+import https from 'https';
 
 const convoData = {
   conversations: null,
@@ -9,7 +10,13 @@ const convoData = {
 }
 
 const downloadFile = (async (url, path) => {
-  const res = await fetch(url, {headers: {'user-agent': 'x'}});
+  const res = await fetch(url, {
+    headers: {'user-agent': 'x'},
+    // Ensure TLSv1.3, so Cloudflare doesn't block
+    agent: new https.Agent({
+      minVersion: 'TLSv1.3',
+    }),
+  });
   const fileStream = fs.createWriteStream(path);
   return new Promise((resolve, reject) => {
       res.json().then(data => {
