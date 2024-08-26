@@ -1,4 +1,4 @@
-import fetch from "node-fetch"
+import axios from "axios"
 import fs from 'node:fs'
 
 const convoData = {
@@ -9,16 +9,16 @@ const convoData = {
 }
 
 const downloadFile = (async (url, path) => {
-  const res = await fetch(url, {headers: {'user-agent': 'x'}});
+  const res = await axios.get(url, { headers: { 'user-agent': 'x' } });
   const fileStream = fs.createWriteStream(path);
   return new Promise((resolve, reject) => {
-      res.json().then(data => {
-        fileStream.write(JSON.stringify(data, null, 2))
-        resolve(data)
-      })
-      res.body.on("error", reject);
-      fileStream.on("finish", resolve);
-    });
+    fileStream.write(JSON.stringify(res.data, null, 2), (err) => {
+      if (err) reject(err)
+      else resolve(res.data)
+    })
+    fileStream.on("error", reject);
+    fileStream.on("finish", resolve);
+  })
 });
 
 const args = process.argv.slice(2);
