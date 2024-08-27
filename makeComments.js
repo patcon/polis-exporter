@@ -17,15 +17,15 @@ console.log(csvHeader)
 
 // Map JSON data to CSV format
 comments.forEach(comment => {
-    const timestamp = comment.created
-    const datetime = formatCustomDate(comment.created)
-    const commentId = comment.tid
-    const authorId = comment.pid
-    const agrees = comment.agree_count
-    const disagrees = comment.disagree_count
-    const moderated = comment.mod
-    const commentBody = comment.txt
+  const timestamp = comment.created
+  const datetime = formatCustomDate(comment.created)
+  const commentId = comment.tid
+  const authorId = comment.pid
+  const agrees = comment.agree_count
+  const disagrees = comment.disagree_count
+  const moderated = comment.mod
+  const commentBody = comment.txt
 
-    const csvRow = `${timestamp},${datetime},${commentId},${authorId},${agrees},${disagrees},${moderated},${commentBody}`
-    console.log(csvRow)
+  const csvRow = `${timestamp},${datetime},${commentId},${authorId},${agrees},${disagrees},${moderated},${commentBody}`
+  console.log(csvRow)
 })

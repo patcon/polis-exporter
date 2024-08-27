@@ -1,4 +1,5 @@
 import fs from 'node:fs/promises'
+import { formatCSVValue } from './lib/utils.js';
 
 const args = process.argv.slice(2);
 const convoId = args[0]
@@ -21,7 +22,7 @@ const summary = {
 }
 
 const csvRows = Object.entries(summary).map(([key, value]) => {
-  const formattedValue = typeof value === 'string' && value.includes(',') ? `"${value}"` : value
+  const formattedValue = formatCSVValue(value)
   return `${key},${formattedValue}`
 }).join('\n') + '\n'
 
