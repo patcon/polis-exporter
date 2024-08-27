@@ -1,5 +1,5 @@
 import fs from 'node:fs/promises'
-import { formatCustomDate } from './lib/utils.js';
+import { formatCustomDate, formatCSVValue } from './lib/utils.js';
 
 // Read the JSON file
 const args = process.argv.slice(2);
@@ -24,7 +24,7 @@ comments.forEach(comment => {
   const agrees = comment.agree_count
   const disagrees = comment.disagree_count
   const moderated = comment.mod
-  const commentBody = comment.txt
+  const commentBody = formatCSVValue(comment.txt)
 
   const csvRow = `${timestamp},${datetime},${commentId},${authorId},${agrees},${disagrees},${moderated},${commentBody}`
   console.log(csvRow)
