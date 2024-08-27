@@ -64,3 +64,15 @@ downloadFile(simpleUrls.pca2,              `data/${CONVO_ID}--math-pca2.json`).t
   })
 })
 downloadFile(simpleUrls.comments,          `data/${CONVO_ID}--comments.json`)
+
+const ensureOutputsDirectory = async (convoId) => {
+  try {
+    await fs.promises.mkdir(`outputs/${convoId}`, { recursive: true })
+  } catch (error) {
+    console.error('Error creating convo directory:', error)
+    throw error
+  }
+}
+
+// Ensure the convo's outputs directory exists, for future processing.
+ensureOutputsDirectory(CONVO_ID)

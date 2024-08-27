@@ -25,4 +25,4 @@ const csvRows = Object.entries(summary).map(([key, value]) => {
   return `${key},${formattedValue}`
 }).join('\n') + '\n'
 
-await fs.writeFile(`outputs/${CONVO_ID}--summary.csv`, csvRows, 'utf8')
+await fs.writeFile(`outputs/${CONVO_ID}/summary.csv`, csvRows, 'utf8')

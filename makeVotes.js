@@ -71,11 +71,10 @@ refinedData.forEach(row => {
   csvContent += row.join(',') + '\n'
 })
 
-fs.writeFile(`outputs/${CONVO_ID}--votes.csv`, csvContent, err => {
+fs.writeFile(`outputs/${CONVO_ID}/votes.csv`, csvContent, err => {
   if (err) {
     console.error(err);
   } else {
-    // file written successfully
+    console.log(`Wrote: outputs/${CONVO_ID}/votes.csv`)
   }
 })
-console.log(`Writing: outputs/${CONVO_ID}--votes.csv`)
