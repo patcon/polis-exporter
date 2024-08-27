@@ -10,9 +10,10 @@ Docs: [Export format](https://compdemocracy.org/export/)
 npm install
 
 CONVO_ID=xxxxxxxx
-node getData.js $CONVO_ID     # Download json data on convo
-node makeVotes.js $CONVO_ID   # Make votes.csv from downloaded files
-node makeSummary.js $CONVO_ID # Make summary.csv (WIP)
+node getData.js $CONVO_ID      # Download json data on convo
+node makeVotes.js $CONVO_ID    # Make votes.csv from downloaded files
+node makeSummary.js $CONVO_ID  # Make summary.csv
+node makeComments.js $CONVO_ID # Make comments.csv
 ```
 
 ## Roadmap
@@ -22,8 +23,8 @@ node makeSummary.js $CONVO_ID # Make summary.csv (WIP)
     - Ideally, this would not need supplying a password.
 - Write script to generate...
     - [x] `votes.csv`
-    - [ ] `summary.csv`
-    - [ ] `comments.csv`
+    - [x] `summary.csv`
+    - [x] `comments.csv`
     - [ ] `participants-votes.csv`
     - [ ] `stats-history.csv`
 - [ ] Encapsulate AI calls in a small rest client library
