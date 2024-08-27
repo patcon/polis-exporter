@@ -1,21 +1,22 @@
 import fetch from "node-fetch"
 import fs from 'node:fs'
 import https from 'https'
+import pThrottle from 'p-throttle'
 
-const convoData = {
-  conversations: null,
-  conversationStats: null,
-  pca2: null,
-  comments: null,
-}
+// Only allow 10 req/sec to avoid Cloudflare block.
+const throttle = pThrottle({
+  limit: 10,
+  interval: 1000,
+})
 
 const downloadFile = async (url, path) => {
   try {
-    const res = await fetch(url, {
+    const res = await throttle(() => fetch(url, {
       headers: {'user-agent': 'x'},
       // Ensure TLSv1.3, so Cloudflare doesn't block
       agent: new https.Agent({ minVersion: 'TLSv1.3' }),
-    })
+    }))()
+    console.log(`Fetching: ${url}`)
     const data = await res.json()
     await fs.promises.writeFile(path, JSON.stringify(data, null, 2))
     return data
