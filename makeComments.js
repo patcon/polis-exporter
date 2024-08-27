@@ -6,7 +6,7 @@ const args = process.argv.slice(2);
 const convoId = args[0]
 const CONVO_ID = convoId || "6bkf4ujff9"
 
-const comments = JSON.parse(await fs.readFile(`data/${CONVO_ID}--comments.json`, "binary"))
+const comments = JSON.parse(await fs.readFile(`data/${CONVO_ID}--comments.json`, "utf-8"))
 
 // Sort comments by comment-id (tid), descending order.
 comments.sort((a, b) => b.tid - a.tid)

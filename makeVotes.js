@@ -12,7 +12,7 @@ const args = process.argv.slice(2);
 const convoId = args[0]
 const CONVO_ID = convoId || "6bkf4ujff9"
 
-const json = await fs.readFile(`data/${CONVO_ID}--votes.json`, "binary");
+const json = await fs.readFile(`data/${CONVO_ID}--votes.json`, "utf-8");
 const unsorted = JSON.parse(json)
 const sortByCommentIdAsc = (a, b) => {
   return a.tid - b.tid || a.pid - b.pid
