@@ -20,4 +20,9 @@ const summary = {
   "conversation-description": convo.description,
 }
 
-console.log(summary)
+const csvRows = Object.entries(summary).map(([key, value]) => {
+  const formattedValue = typeof value === 'string' && value.includes(',') ? `"${value}"` : value
+  return `${key},${formattedValue}`
+}).join('\n') + '\n'
+
+await fs.writeFile(`outputs/${CONVO_ID}--summary.csv`, csvRows, 'utf8')
