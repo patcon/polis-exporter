@@ -37,10 +37,10 @@ refinedData.forEach(row => {
   csvContent += row.join(',') + '\n'
 })
 
-fs.writeFile(`outputs/${CONVO_ID}/votes.csv`, csvContent, err => {
-  if (err) {
-    console.error(err);
-  } else {
-    console.log(`Wrote: outputs/${CONVO_ID}/votes.csv`)
-  }
-})
+const filePath = `outputs/${CONVO_ID}/votes.csv`
+try {
+  await fs.writeFile(filePath, csvContent, 'utf-8')
+  console.log(`Successfully wrote to: ${filePath}`)
+} catch (error) {
+  console.error(`Failed to write to: ${filePath}`, error)
+}

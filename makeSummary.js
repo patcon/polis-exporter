@@ -24,6 +24,13 @@ const summary = {
 const csvRows = Object.entries(summary).map(([key, value]) => {
   const formattedValue = formatCSVValue(value)
   return `${key},${formattedValue}`
-}).join('\n') + '\n'
+})
+const csvContent = csvRows.join('\n') + '\n'
 
-await fs.writeFile(`outputs/${CONVO_ID}/summary.csv`, csvRows, 'utf8')
+const filePath = `outputs/${CONVO_ID}/summary.csv`
+try {
+  await fs.writeFile(filePath, csvContent, 'utf-8')
+  console.log(`Successfully wrote to: ${filePath}`)
+} catch (error) {
+  console.error(`Failed to write to: ${filePath}`, error)
+}

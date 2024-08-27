@@ -13,7 +13,7 @@ comments.sort((a, b) => b.tid - a.tid)
 
 // CSV header
 const csvHeader = 'timestamp,datetime,comment-id,author-id,agrees,disagrees,moderated,comment-body'
-console.log(csvHeader)
+const csvRows = [csvHeader]
 
 // Map JSON data to CSV format
 comments.forEach(comment => {
@@ -27,5 +27,14 @@ comments.forEach(comment => {
   const commentBody = formatCSVValue(comment.txt)
 
   const csvRow = `${timestamp},${datetime},${commentId},${authorId},${agrees},${disagrees},${moderated},${commentBody}`
-  console.log(csvRow)
+  csvRows.push(csvRow)
 })
+
+const csvContent = csvRows.join('\n') + '\n'
+const filePath = `outputs/${CONVO_ID}/comments.csv`
+try {
+  await fs.writeFile(filePath, csvContent, 'utf-8')
+  console.log(`Successfully wrote to: ${filePath}`)
+} catch (error) {
+  console.error(`Failed to write to: ${filePath}`, error)
+}
